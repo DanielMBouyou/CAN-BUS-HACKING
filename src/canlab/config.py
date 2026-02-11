@@ -116,8 +116,31 @@ class AttackModelConfig:
     num_layers: int = 2
     seq_len: int = 50
     learning_rate: float = 1e-3
-    epochs: int = 50
+    epochs: int = 100
     batch_size: int = 64
+    # ── Attention ──
+    use_attention: bool = True
+    attention_heads: int = 4
+    # ── Régularisation ──
+    dropout: float = 0.2
+    grad_clip_norm: float = 1.0
+    weight_decay: float = 1e-5
+    # ── Scheduler ──
+    scheduler: str = "cosine"  # "cosine" | "plateau" | "none"
+    warmup_epochs: int = 5
+    # ── Early stopping ──
+    early_stopping: bool = True
+    patience: int = 10
+    val_split: float = 0.15
+    # ── Teacher forcing ──
+    teacher_forcing_start: float = 1.0
+    teacher_forcing_end: float = 0.0
+    # ── Optimiseur furtivité ──
+    optim_n_trials: int = 200
+    optim_temporal_weight: float = 0.3
+    # ── Injection ──
+    timing_jitter_pct: float = 0.10  # ±10 % de jitter sur le timing
+    drift_smoothing_window: int = 20
 
 
 ATTACK_CFG = AttackModelConfig()
