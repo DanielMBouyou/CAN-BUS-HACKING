@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  # ── API FastAPI ──────────────────────────────
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: api
+    ports:
+      - "8000:8000"
+    environment:
+      - CAN_INTERFACE=vcan0
+      - USE_VIRTUAL_BUS=true
+      - LOG_LEVEL=INFO
+    volumes:
+      - ../data:/app/data
+    restart: unless-stopped
+    networks:
+      - canlab
+
+  # ── Dashboard Streamlit ─────────────────────
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_HOST=api
+      - API_PORT=8000
+      - USE_VIRTUAL_BUS=true
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - canlab
+
+networks:
+  canlab:
+    driver: bridge
