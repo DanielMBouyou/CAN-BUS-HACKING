@@ -64,9 +64,9 @@ class TestCUSUMIDS:
         assert cusum._calibrated
 
     def test_normal_traffic_low_score(self):
-        cusum = CUSUMIDS()
+        cusum = CUSUMIDS(delta=5.0, threshold=50.0)
         rng = np.random.default_rng(42)
-        X = rng.normal(size=(100, 5))
+        X = rng.normal(size=(500, 5))
         cusum.calibrate(X)
         cusum.activate()
 
